@@ -1,0 +1,59 @@
+asset-download/
+
+# dependencies
+**/node_modules/
+**/dist/
+client/node_modules/
+server/node_modules/
+client/public/
+client/src/assets
+client/dist/
+server/dist/
+client/.pnp
+client/.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+client/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+client/.env/
+server/.env/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+node_modules
+
+server/prisma/inputData/
+jsonSeedData/
+
+# Sentry
+client/sentry.client.config.ts
+client/sentry.edge.config.ts
+client/sentry.server.config.ts
+client/src/instrumentation.ts
+client/src/app/global-error.tsx
+client/src/app/sentry-example-page
+client/src/app/apiclient/src/assets
+client/src/app/api/sentry-example-api/route.ts
