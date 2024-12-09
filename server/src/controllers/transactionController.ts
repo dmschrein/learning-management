@@ -9,7 +9,7 @@ dotenv.config();
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error(
-    "STRIPE_SECRET_KEY is required but was not found in env variables"
+    "STRIPE_SECRET_KEY os required but was not found in env variables"
   );
 }
 
@@ -22,20 +22,15 @@ export const listTransactions = async (
   const { userId } = req.query;
 
   try {
-    console.log("Fetching transactions for userId:", userId);
-
     const transactions = userId
       ? await Transaction.query("userId").eq(userId).exec()
       : await Transaction.scan().exec();
-
-    console.log("Transactions retrieved successfully:", transactions);
 
     res.json({
       message: "Transactions retrieved successfully",
       data: transactions,
     });
   } catch (error) {
-    console.error("Error retrieving transactions:", error);
     res.status(500).json({ message: "Error retrieving transactions", error });
   }
 };
@@ -46,19 +41,11 @@ export const createStripePaymentIntent = async (
 ): Promise<void> => {
   let { amount } = req.body;
 
-  console.log(
-    "Received request to create Stripe payment intent with amount:",
-    amount
-  );
-
   if (!amount || amount <= 0) {
-    console.log("Invalid amount provided. Defaulting to 50.");
     amount = 50;
   }
 
   try {
-    console.log("Creating payment intent with amount:", amount);
-
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
@@ -68,19 +55,16 @@ export const createStripePaymentIntent = async (
       },
     });
 
-    console.log("Payment intent created successfully:", paymentIntent);
-
     res.json({
-      message: "Payment intent created successfully",
+      message: "",
       data: {
         clientSecret: paymentIntent.client_secret,
       },
     });
   } catch (error) {
-    console.error("Error creating Stripe payment intent:", error);
     res
       .status(500)
-      .json({ message: "Error creating Stripe payment intent", error });
+      .json({ message: "Error creating stripe payment intent", error });
   }
 };
 
@@ -90,16 +74,11 @@ export const createTransaction = async (
 ): Promise<void> => {
   const { userId, courseId, transactionId, amount, paymentProvider } = req.body;
 
-  console.log("Received request to create transaction:", req.body);
-
   try {
-    // 1. Get course info
-    console.log("Fetching course details for courseId:", courseId);
+    // 1. get course info
     const course = await Course.get(courseId);
-    console.log("Course details fetched:", course);
 
-    // 2. Create transaction record
-    console.log("Creating new transaction record");
+    // 2. create transaction record
     const newTransaction = new Transaction({
       dateTime: new Date().toISOString(),
       userId,
@@ -109,10 +88,8 @@ export const createTransaction = async (
       paymentProvider,
     });
     await newTransaction.save();
-    console.log("Transaction record saved successfully:", newTransaction);
 
-    // 3. Create initial course progress
-    console.log("Creating initial course progress for userId:", userId);
+    // 3. create initial course progress
     const initialProgress = new UserCourseProgress({
       userId,
       courseId,
@@ -128,10 +105,8 @@ export const createTransaction = async (
       lastAccessedTimestamp: new Date().toISOString(),
     });
     await initialProgress.save();
-    console.log("Initial course progress saved successfully:", initialProgress);
 
-    // 4. Add enrollment to relevant course
-    console.log("Updating course enrollments for courseId:", courseId);
+    // 4. add enrollment to relevant course
     await Course.update(
       { courseId },
       {
@@ -140,7 +115,6 @@ export const createTransaction = async (
         },
       }
     );
-    console.log("Course enrollments updated successfully");
 
     res.json({
       message: "Purchased Course successfully",
@@ -150,11 +124,6 @@ export const createTransaction = async (
       },
     });
   } catch (error) {
-    console.error(
-      "Error creating transaction and enrollment for request:",
-      req.body,
-      error
-    );
     res
       .status(500)
       .json({ message: "Error creating transaction and enrollment", error });
