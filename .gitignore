@@ -25,6 +25,7 @@ client/.next/
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # debug
@@ -35,7 +36,11 @@ yarn-error.log*
 # local env files
 .env*.local
 client/.env/
-server/.env/
+client/.env.local
+client/.env.development
+client/.env.production
+server/.env
+sever/.env.production
 
 # vercel
 .vercel
@@ -57,3 +62,8 @@ client/src/app/global-error.tsx
 client/src/app/sentry-example-page
 client/src/app/apiclient/src/assets
 client/src/app/api/sentry-example-api/route.ts
+
+.vscode/
+server/shared-local-instance.db
+server/dynamodb-local-metadata.json
+shared-local-instance.db
