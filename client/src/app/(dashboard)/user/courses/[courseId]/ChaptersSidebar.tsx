@@ -244,7 +244,7 @@ const Chapter = ({
   chapter: Chapter;
   index: number;
   sectionId: string;
-  sectionProgress: SectionProgress;
+  sectionProgress?: SectionProgress;
   chapterId: string;
   courseId: string;
   handleChapterClick: (sectionId: string, chapterId: string) => void;

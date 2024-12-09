@@ -110,7 +110,7 @@ const Landing = () => {
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
         viewport={{ amount: 0.3, once: true }}
-        className="landing__featured"
+        // className="landing__featured"
       >
         <h2 className="landing__featured-title">Featured Courses</h2>
         <p className="landing__featured-description">
